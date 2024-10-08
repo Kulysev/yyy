@@ -1,0 +1,94 @@
+Задание 3-4:
+#!/bin/bash
+
+(grep -rl "123" target | xargs -0 cp . && echo "cp - OK") 
+
+(grep -RLZ "123" target | xargs -0 rm && echo "rm - OK") || echo "rm - FAILS"
+
+
+
+
+chmod +x script.sh
+
+./script.sh
+
+Задание 3-5: 
+#!/bin/bash
+
+dir1="dir1"
+dir2="dir2"
+
+echo "Файлы, которые есть в $dir1, но отсутствуют в $dir2:"
+comm -13 <(ls "$dir1" | sort) <(ls "$dir2" | sort)
+
+echo "Файлы, которые есть в $dir2, но отсутствуют в $dir1:"
+comm -23 <(ls "$dir1" | sort) <(ls "$dir2" | sort)
+
+
+
+
+
+chmod +x compare_dirs.sh
+
+./compare_dirs.sh
+
+Задание 3-6:
+#!/bin/bash
+
+declare -A configs
+configs=(["home"]=".bashrc-home" ["work"]=".bashrc-work")
+
+echo "Выберите конфигурацию (home/work): "
+read choice
+
+case $choice in
+    home)
+        cp "${configs[home]}" ~/.bashrc
+        ;;
+    work)
+        cp "${configs[work]}" ~/.bashrc
+        ;;
+    *)
+        echo "Неверный выбор"
+        exit 1
+        ;;
+esac
+
+echo "Конфигурация переключена на $choice."
+
+
+
+
+
+chmod +x switch_bashrc.sh
+
+./switch_bashrc.sh
+
+Задание 3-7:
+#!/bin/bash
+
+add_byte() {
+    local a=$1
+    local b=$2
+    local sum=$(( (a + b) & 0xFF ))  # Ограничиваем до 1 байта
+    echo "Сумма $a и $b (однобайтовые): $sum"
+}
+
+add_byte 79 -46
+add_byte -97 96
+
+add_two_bytes() {
+    local a=$1
+    local b=$2
+    local sum=$(( (a + b) & 0xFFFF ))  # Ограничиваем до 2 байт
+    echo "Сумма $a и $b (двухбайтовые): $sum"
+}
+
+add_two_bytes 12868 -1219
+
+
+
+
+chmod +x addition.sh
+
+./addition.sh
